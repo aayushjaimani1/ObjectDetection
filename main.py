@@ -33,3 +33,20 @@ while True:
     confs = list(map(float,confs))
     # print(type(confs[0]))
     # print(confs)
+
+    indices = cv2.dnn.NMSBoxes(bbox,confs,thres,nms_threshold)
+    if len(classIds) != 0:
+        for i in indices:
+            i = i[0]
+            box = bbox[i]
+            confidence = str(round(confs[i],2))
+            color = Colors[classIds[i][0]-1]
+            x,y,w,h = box[0],box[1],box[2],box[3]
+            cv2.rectangle(img, (x,y), (x+w,y+h), color, thickness=2)
+            cv2.putText(img, classNames[classIds[i][0]-1]+" "+confidence,(x+10,y+20),
+                        font,1,color,2)
+#             cv2.putText(img,str(round(confidence,2)),(box[0]+100,box[1]+30),
+#                         font,1,colors[classId-1],2)
+
+    cv2.imshow("Output",img)
+    cv2.waitKey(1)
