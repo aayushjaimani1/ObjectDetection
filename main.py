@@ -12,3 +12,24 @@ classNames = []
 with open('coco.names','r') as f:
     classNames = f.read().splitlines()
 print(classNames)
+font = cv2.FONT_HERSHEY_PLAIN
+#font = cv2.FONT_HERSHEY_COMPLEX
+Colors = np.random.uniform(0, 255, size=(len(classNames), 3))
+
+configPath = 'ssd_mobilenet_v3_large_coco_2020_01_14.pbtxt'
+weightsPath = 'frozen_inference_graph.pb'
+
+net = cv2.dnn_DetectionModel(weightsPath, configPath)
+net.setInputSize(320,320)
+net.setInputScale(1.0/ 127.5)
+net.setInputMean((127.5, 127.5, 127.5))
+net.setInputSwapRB(True)
+
+while True:
+    success,img = cap.read()
+    classIds, confs, bbox = net.detect(img,confThreshold=thres)
+    bbox = list(bbox)
+    confs = list(np.array(confs).reshape(1,-1)[0])
+    confs = list(map(float,confs))
+    # print(type(confs[0]))
+    # print(confs)
