@@ -49,4 +49,4 @@ while True:
 #                         font,1,colors[classId-1],2)
 
     cv2.imshow("Output",img)
-    
+    cv2.waitKey(1)
