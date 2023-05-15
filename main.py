@@ -28,7 +28,9 @@ net.setInputSwapRB(True)
 while True:
     success,img = cap.read()
     classIds, confs, bbox = net.detect(img,confThreshold=thres)
-
+    bbox = list(bbox)
+    confs = list(np.array(confs).reshape(1,-1)[0])
+    confs = list(map(float,confs))
     # print(type(confs[0]))
     # print(confs)
 
